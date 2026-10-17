@@ -88,7 +88,7 @@ internal fun UpdatePrompt(state: AppUpdateState, onDismiss: () -> Unit, onDownlo
         text = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(when (state.stage) {
                 UpdateStage.DOWNLOADING -> "Downloading version ${state.release?.version} · ${state.progress}%"
-                UpdateStage.READY -> "Version ${state.release?.version} is verified and ready. Android will ask you to confirm installation. Your logs and settings stay on your phone."
+                UpdateStage.READY -> "Version ${state.release?.version} passed checksum and signing-key checks. Android will ask you to confirm installation. Your logs and settings stay on your phone."
                 UpdateStage.ERROR -> state.message ?: "The update could not be downloaded."
                 else -> "Version ${state.release?.version} is available on GitHub. Download and install the update? Your logs and settings will be preserved."
             })

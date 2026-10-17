@@ -2,13 +2,13 @@
 
 An offline Android battery monitor for understanding charging, battery drain, screen usage, and battery health, with an AMOLED black interface and customizable home screen widgets.
 
-**Current version: 1.10.0** · **Android 10 or newer**
+**Current version: 1.10.1** · **Android 10 or newer**
 
 ## Download and install
 
 Get the APK from the [latest release](https://github.com/gatofile/BatteryMonitor/releases/latest).
 
-1. Download `BatteryMonitor-v1.10.0.apk` on your Android phone.
+1. Download `BatteryMonitor-v1.10.1.apk` on your Android phone.
 2. Open the downloaded file and follow Android's installation instructions. If asked, allow your browser or Files app to install this APK.
 3. Open BatteryMonitor. No account, root access, or internet connection is needed to use it.
 
@@ -19,7 +19,7 @@ Install updates over the existing app to preserve your settings and recorded ses
 - **Live dashboard:** battery percentage, temperature, voltage, current, power, charging status, and battery details supported by your phone.
 - **Background monitoring:** record readings while the app is closed or the screen is off, with configurable charging and discharging intervals.
 - **Charging sessions:** percentage gained, charging speed, current, average and peak power, temperature range, and estimated time to 80% or full.
-- **Discharging sessions:** battery consumed, drain per hour, screen-on and screen-off time and drain, and estimated time remaining.
+- **Discharging sessions:** battery consumed, drain per hour, screen-on and screen-off time and drain, and estimated time remaining. Remaining-life predictions use recent history, filter brief spikes, and adapt gradually as battery-level observations accumulate.
 - **Session history:** revisit previous charging and discharging sessions, their statistics, and recorded app usage.
 - **Graphs:** inspect battery level, temperature, power, current, and voltage over time. Missing readings appear as gaps.
 - **App usage:** see apps used during a session, estimated battery use, and usage details. Android Usage Access is optional and enabled through system settings.

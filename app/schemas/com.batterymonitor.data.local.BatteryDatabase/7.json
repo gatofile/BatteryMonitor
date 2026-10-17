@@ -1,0 +1,571 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "59c726eb5b2106a1a12db6b4441403cc",
+    "entities": [
+      {
+        "tableName": "samples",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `monotonic` INTEGER NOT NULL, `sessionId` TEXT NOT NULL, `kind` TEXT NOT NULL, `percentage` INTEGER, `temperature` REAL, `voltage` REAL, `current` REAL, `power` REAL, `screenOn` INTEGER, `intervalMillis` INTEGER NOT NULL DEFAULT 30000, `capacityMah` INTEGER, `usageSessionId` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monotonic",
+            "columnName": "monotonic",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "percentage",
+            "columnName": "percentage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "temperature",
+            "columnName": "temperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "voltage",
+            "columnName": "voltage",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "current",
+            "columnName": "current",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "power",
+            "columnName": "power",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "screenOn",
+            "columnName": "screenOn",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "intervalMillis",
+            "columnName": "intervalMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "30000"
+          },
+          {
+            "fieldPath": "capacityMah",
+            "columnName": "capacityMah",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "usageSessionId",
+            "columnName": "usageSessionId",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_samples_timestamp",
+            "unique": false,
+            "columnNames": [
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_samples_timestamp` ON `${TABLE_NAME}` (`timestamp`)"
+          },
+          {
+            "name": "index_samples_sessionId",
+            "unique": false,
+            "columnNames": [
+              "sessionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_samples_sessionId` ON `${TABLE_NAME}` (`sessionId`)"
+          },
+          {
+            "name": "index_samples_usageSessionId",
+            "unique": false,
+            "columnNames": [
+              "usageSessionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_samples_usageSessionId` ON `${TABLE_NAME}` (`usageSessionId`)"
+          },
+          {
+            "name": "index_samples_sessionId_monotonic",
+            "unique": true,
+            "columnNames": [
+              "sessionId",
+              "monotonic"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_samples_sessionId_monotonic` ON `${TABLE_NAME}` (`sessionId`, `monotonic`)"
+          }
+        ]
+      },
+      {
+        "tableName": "sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `kind` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `lastObservedAt` INTEGER NOT NULL, `endedAt` INTEGER, `startPercentage` INTEGER, `endPercentage` INTEGER, `startObserved` INTEGER NOT NULL, `endObserved` INTEGER NOT NULL, `observedMillis` INTEGER NOT NULL, `powerWattMillis` REAL NOT NULL, `powerMillis` INTEGER NOT NULL, `peakPower` REAL, `minTemperature` REAL, `maxTemperature` REAL, `fastestRate` REAL, `screenOnMillis` INTEGER NOT NULL DEFAULT 0, `screenOffMillis` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "startedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastObservedAt",
+            "columnName": "lastObservedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "endedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startPercentage",
+            "columnName": "startPercentage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endPercentage",
+            "columnName": "endPercentage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startObserved",
+            "columnName": "startObserved",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endObserved",
+            "columnName": "endObserved",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observedMillis",
+            "columnName": "observedMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "powerWattMillis",
+            "columnName": "powerWattMillis",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "powerMillis",
+            "columnName": "powerMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "peakPower",
+            "columnName": "peakPower",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "minTemperature",
+            "columnName": "minTemperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "maxTemperature",
+            "columnName": "maxTemperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "fastestRate",
+            "columnName": "fastestRate",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "screenOnMillis",
+            "columnName": "screenOnMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOffMillis",
+            "columnName": "screenOffMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_sessions_startedAt",
+            "unique": false,
+            "columnNames": [
+              "startedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_sessions_startedAt` ON `${TABLE_NAME}` (`startedAt`)"
+          }
+        ]
+      },
+      {
+        "tableName": "usage_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `lastObservedAt` INTEGER NOT NULL, `endedAt` INTEGER, `startPercentage` INTEGER, `endPercentage` INTEGER, `gained` INTEGER NOT NULL, `consumed` INTEGER NOT NULL, `observedMillis` INTEGER NOT NULL, `hasGaps` INTEGER NOT NULL, `rule` TEXT NOT NULL, `threshold` INTEGER NOT NULL, `chargingPeak` INTEGER, `dischargingLow` INTEGER, `endReason` TEXT, `screenStatsSince` INTEGER, `screenOnMillis` INTEGER NOT NULL DEFAULT 0, `screenOffMillis` INTEGER NOT NULL DEFAULT 0, `screenOnConsumed` INTEGER NOT NULL DEFAULT 0, `screenOffConsumed` INTEGER NOT NULL DEFAULT 0, `screenOnDischargeMillis` INTEGER NOT NULL DEFAULT 0, `screenOffDischargeMillis` INTEGER NOT NULL DEFAULT 0, `powerStatsSince` INTEGER, `chargingWattMillis` REAL NOT NULL DEFAULT 0, `chargingPowerMillis` INTEGER NOT NULL DEFAULT 0, `dischargingWattMillis` REAL NOT NULL DEFAULT 0, `dischargingPowerMillis` INTEGER NOT NULL DEFAULT 0, `peakChargingWatts` REAL, `peakDischargingWatts` REAL, `minTemperature` REAL, `maxTemperature` REAL, `kind` TEXT, `levelStatsSince` INTEGER, `levelObservedMillis` INTEGER NOT NULL DEFAULT 0, `levelGained` INTEGER NOT NULL DEFAULT 0, `levelConsumed` INTEGER NOT NULL DEFAULT 0, `chargeMilliAmpHours` REAL NOT NULL DEFAULT 0, `dischargeMilliAmpHours` REAL NOT NULL DEFAULT 0, `currentObservedMillis` INTEGER NOT NULL DEFAULT 0, `fastestChargingRate` REAL, `startTemperature` REAL, `lastTemperature` REAL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "startedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastObservedAt",
+            "columnName": "lastObservedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "endedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startPercentage",
+            "columnName": "startPercentage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endPercentage",
+            "columnName": "endPercentage",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "gained",
+            "columnName": "gained",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "consumed",
+            "columnName": "consumed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observedMillis",
+            "columnName": "observedMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasGaps",
+            "columnName": "hasGaps",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rule",
+            "columnName": "rule",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "threshold",
+            "columnName": "threshold",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chargingPeak",
+            "columnName": "chargingPeak",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dischargingLow",
+            "columnName": "dischargingLow",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endReason",
+            "columnName": "endReason",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "screenStatsSince",
+            "columnName": "screenStatsSince",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "screenOnMillis",
+            "columnName": "screenOnMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOffMillis",
+            "columnName": "screenOffMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOnConsumed",
+            "columnName": "screenOnConsumed",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOffConsumed",
+            "columnName": "screenOffConsumed",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOnDischargeMillis",
+            "columnName": "screenOnDischargeMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "screenOffDischargeMillis",
+            "columnName": "screenOffDischargeMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "powerStatsSince",
+            "columnName": "powerStatsSince",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "chargingWattMillis",
+            "columnName": "chargingWattMillis",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "chargingPowerMillis",
+            "columnName": "chargingPowerMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "dischargingWattMillis",
+            "columnName": "dischargingWattMillis",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "dischargingPowerMillis",
+            "columnName": "dischargingPowerMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "peakChargingWatts",
+            "columnName": "peakChargingWatts",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "peakDischargingWatts",
+            "columnName": "peakDischargingWatts",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "minTemperature",
+            "columnName": "minTemperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "maxTemperature",
+            "columnName": "maxTemperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "levelStatsSince",
+            "columnName": "levelStatsSince",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelObservedMillis",
+            "columnName": "levelObservedMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "levelGained",
+            "columnName": "levelGained",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "levelConsumed",
+            "columnName": "levelConsumed",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "chargeMilliAmpHours",
+            "columnName": "chargeMilliAmpHours",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "dischargeMilliAmpHours",
+            "columnName": "dischargeMilliAmpHours",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "currentObservedMillis",
+            "columnName": "currentObservedMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "fastestChargingRate",
+            "columnName": "fastestChargingRate",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "startTemperature",
+            "columnName": "startTemperature",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "lastTemperature",
+            "columnName": "lastTemperature",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_usage_sessions_startedAt",
+            "unique": false,
+            "columnNames": [
+              "startedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_usage_sessions_startedAt` ON `${TABLE_NAME}` (`startedAt`)"
+          }
+        ]
+      },
+      {
+        "tableName": "session_app_usage",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sessionId` TEXT NOT NULL, `capturedUntil` INTEGER NOT NULL, `report` TEXT NOT NULL, PRIMARY KEY(`sessionId`))",
+        "fields": [
+          {
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "capturedUntil",
+            "columnName": "capturedUntil",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "report",
+            "columnName": "report",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "sessionId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59c726eb5b2106a1a12db6b4441403cc')"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_preview_hint">Customizable battery widgets</string>
+    <string name="widget_edit">Customize BatteryMonitor widget</string>
+    <string name="widget_description">Resizable battery metrics and graphs with individual layouts, colors and update preferences.</string>
+    <string name="app_name">BatteryMonitor</string>
+    <string name="dashboard_subtitle">Your battery, right now.</string>
+    <string name="live">Live</string>
+    <string name="battery_level">Battery level</string>
+    <string name="battery_percentage">%1$d%%</string>
+    <string name="waiting">Waiting for Android battery data…</string>
+    <string name="no_battery">Battery data unavailable</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="charging">Charging</string>
+    <string name="discharging">Discharging</string>
+    <string name="full">Full</string>
+    <string name="not_charging">Not charging</string>
+    <string name="unknown">Unknown</string>
+    <string name="power">Battery power</string>
+    <string name="temperature">Temperature</string>
+    <string name="voltage">Voltage</string>
+    <string name="current">Current</string>
+    <string name="battery_details">Battery details</string>
+    <string name="status">Status</string>
+    <string name="source">Charging source</string>
+    <string name="usb">USB</string>
+    <string name="ac">AC</string>
+    <string name="wireless">Wireless</string>
+    <string name="not_connected">Not connected</string>
+    <string name="health">Battery health</string>
+    <string name="health_good">Good</string>
+    <string name="health_overheat">Overheating</string>
+    <string name="health_dead">Dead</string>
+    <string name="health_over_voltage">Over voltage</string>
+    <string name="health_failure">Unspecified failure</string>
+    <string name="health_cold">Cold</string>
+    <string name="technology">Technology</string>
+    <string name="time_to_full">Estimated time to full</string>
+    <string name="time_minutes">≈ %1$d min</string>
+    <string name="time_hours_minutes">≈ %1$d h %2$d min</string>
+    <string name="system_estimate">Android estimate</string>
+    <string name="reading_note">Live Android sensor readings. Availability and accuracy depend on your device. Health status is reported by Android; it is not a capacity estimate.</string>
+</resources>

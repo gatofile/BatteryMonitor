@@ -2,19 +2,17 @@
 
 An offline Android battery monitor for understanding charging, battery drain, screen usage, and battery health, with an AMOLED black interface and customizable home screen widgets.
 
-**Current version: 1.10.2** · **Android 10 or newer**
+**Current version: 1.10.1** · **Android 10 or newer**
 
 ## Download and install
 
 Get the APK from the [latest release](https://github.com/gatofile/BatteryMonitor/releases/latest).
 
-1. Download `BatteryMonitor-v1.10.2.apk` on your Android phone.
+1. Download `BatteryMonitor-v1.10.1.apk` on your Android phone.
 2. Open the downloaded file and follow Android's installation instructions. If asked, allow your browser or Files app to install this APK.
 3. Open BatteryMonitor. No account, root access, or internet connection is needed to use it.
 
 Install updates over the existing app to preserve your settings and recorded sessions. Uninstalling the app removes its local data.
-
-Published APKs use a non-debuggable release build and retain the existing app signing identity. Google Play Protect may still request a scan or display a warning; a release build is not Google verification. See [Google's warning guidance](https://developers.google.com/android/play-protect/warning-dev-guidance) for the relevant scan or review process.
 
 ## Features
 

@@ -49,7 +49,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 fun MonitoringSettingsScreen(preferences: MonitoringPreferences, running: Boolean,
     update: ((MonitoringPreferences) -> MonitoringPreferences) -> Unit,
     onToggle: (Boolean) -> Unit,
-    onClearLogs: () -> Unit = {}, clearingLogs: Boolean = false, clearLogsMessage: String? = null, onBack: () -> Unit) {
+    onClearLogs: () -> Unit = {}, clearingLogs: Boolean = false, clearLogsMessage: String? = null, onBack: () -> Unit,
+    updateSettings: @Composable () -> Unit = {}) {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var notificationsAllowed by remember { mutableStateOf(false) }
@@ -73,6 +74,7 @@ fun MonitoringSettingsScreen(preferences: MonitoringPreferences, running: Boolea
         LazyColumn(Modifier.testTag("settings-list").windowInsetsPadding(WindowInsets.safeDrawing).padding(horizontal = 20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             item { Column { BackButton(onBack); Text("Settings", style = MaterialTheme.typography.headlineMedium) } }
+            item { updateSettings() }
             item { SettingsCard("Background logging") {
                 ToggleRow("Background monitoring", preferences.backgroundEnabled, onToggle)
                 Text(if (running) "Monitoring active · independent of the app screen" else "Monitoring is not running in the background",
@@ -118,7 +120,7 @@ fun MonitoringSettingsScreen(preferences: MonitoringPreferences, running: Boolea
                 Text("Enjoy the app? You can support its development on Ko-fi.", style = MaterialTheme.typography.bodyMedium)
                 Button(onClick = { open(Intent(Intent.ACTION_VIEW, Uri.parse("https://ko-fi.com/gatofile"))) }) { Text("Donate on Ko-fi") }
             } }
-            item { Text("BatteryMonitor 1.9.2", modifier = Modifier.padding(bottom = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
+            item { Text("BatteryMonitor 1.10.0", modifier = Modifier.padding(bottom = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
         }
     }
 }

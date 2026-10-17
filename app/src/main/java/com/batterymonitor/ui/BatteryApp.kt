@@ -51,7 +51,7 @@ import com.batterymonitor.domain.HistoryMetric
 import com.batterymonitor.ui.theme.BatteryBlue
 
 @Composable
-fun BatteryApp(model: BatteryViewModel, openSettings: Boolean = false) {
+fun BatteryApp(model: BatteryViewModel, openSettings: Boolean = false, updateSettings: @Composable () -> Unit = {}) {
     val context = LocalContext.current
     val live by model.state.collectAsStateWithLifecycle()
     val samples by model.samples.collectAsStateWithLifecycle()
@@ -115,7 +115,7 @@ fun BatteryApp(model: BatteryViewModel, openSettings: Boolean = false) {
             onSession = { usage?.let { openSession(it, "dashboard") } })
         "settings" -> MonitoringSettingsScreen(preferences, serviceRunning, model::updatePreferences, ::toggle,
             onClearLogs = model::clearLogs, clearingLogs = clearingLogs, clearLogsMessage = clearLogsMessage,
-            onBack = { page = "dashboard" })
+            onBack = { page = "dashboard" }, updateSettings = updateSettings)
         "history", "sessions" -> SessionsScreen(usageSessions, now, { page = "dashboard" }, { openSession(it, "history") })
         "session" -> SessionDetailScreen(selectedSession, detailSamples, now, { back() }, {
             appsParent = "session"; page = "apps"

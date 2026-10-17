@@ -13,8 +13,22 @@ android {
         applicationId = "com.batterymonitor"
         minSdk = 29
         targetSdk = 35
-        versionCode = 19
-        versionName = "1.10.1"
+        versionCode = 20
+        versionName = "1.10.2"
+    }
+
+    // Distribution uses the existing private app key, supplied outside source control.
+    val distributionStore = providers.environmentVariable("BATTERYMONITOR_KEYSTORE").orNull
+    if (distributionStore != null) signingConfigs.create("distribution") {
+        storeFile = file(distributionStore)
+        storePassword = providers.environmentVariable("BATTERYMONITOR_STORE_PASSWORD").get()
+        keyAlias = providers.environmentVariable("BATTERYMONITOR_KEY_ALIAS").get()
+        keyPassword = providers.environmentVariable("BATTERYMONITOR_KEY_PASSWORD").get()
+    }
+    buildTypes.getByName("release") {
+        isDebuggable = false
+        isJniDebuggable = false
+        signingConfig = signingConfigs.findByName("distribution")
     }
 
     buildFeatures { compose = true }

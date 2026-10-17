@@ -12,6 +12,7 @@ import com.batterymonitor.ui.BatteryViewModel
 import com.batterymonitor.ui.theme.BatteryMonitorTheme
 
 class MainActivity : ComponentActivity() {
+    private val updates: com.batterymonitor.updates.AppUpdateViewModel by viewModels()
     private val viewModel: BatteryViewModel by viewModels {
         val container = monitoring
         BatteryViewModel.Factory(container.controller, container.history, container.controller, container.settings, container.apps)
@@ -25,7 +26,9 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             BatteryMonitorTheme {
-                BatteryApp(viewModel, intent.getBooleanExtra("open_settings", false))
+                BatteryApp(viewModel, intent.getBooleanExtra("open_settings", false),
+                    updateSettings = { com.batterymonitor.ui.AppUpdateCard(updates) })
+                com.batterymonitor.ui.AppUpdateDialogs(updates)
             }
         }
     }

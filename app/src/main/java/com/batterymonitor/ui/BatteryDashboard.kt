@@ -159,7 +159,7 @@ private fun BatteryHero(state: BatterySnapshot, accent: Color, samples: List<Bat
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("Time to $target% · $remaining${if (estimate?.stale == true) " · last estimate" else ""}", color = accent, style = MaterialTheme.typography.bodyMedium)
-                    if (remaining == "—" || remaining == "Collecting data") MetricInfo("Remaining time", "Early estimates need 1 valid minute of current readings with a device-reported capacity, or 1% level change over at least 1 minute. Monitoring gaps are excluded; unsupported readings do not produce a prediction.")
+                    if (remaining == "—" || remaining == "Collecting data") MetricInfo("Remaining time", "Early estimates need 1 valid minute of current readings with a device-reported capacity, or 1% level change over at least 1 minute. Time to 0% uses up to an hour of observed use, filters short spikes and gradually learns from percentage drops. It adjusts to sustained changes in use; monitoring gaps are excluded.")
                 }
             } else {
                 Text(stringResource(if (state.availability == Availability.LOADING) R.string.waiting else R.string.no_battery),

@@ -120,7 +120,7 @@ fun MonitoringSettingsScreen(preferences: MonitoringPreferences, running: Boolea
                 Text("Enjoy the app? You can support its development on Ko-fi.", style = MaterialTheme.typography.bodyMedium)
                 Button(onClick = { open(Intent(Intent.ACTION_VIEW, Uri.parse("https://ko-fi.com/gatofile"))) }) { Text("Donate on Ko-fi") }
             } }
-            item { Text("BatteryMonitor 1.10.0", modifier = Modifier.padding(bottom = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
+            item { Text("BatteryMonitor 1.10.1", modifier = Modifier.padding(bottom = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
         }
     }
 }

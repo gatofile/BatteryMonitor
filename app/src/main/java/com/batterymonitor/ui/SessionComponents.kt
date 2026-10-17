@@ -66,7 +66,9 @@ internal fun timeReading(session: UsageSession, estimates: BatteryEstimates, tar
     if (estimate?.reached == true) return MetricReading("Reached", "Target reached")
     return estimate?.millis?.let { MetricReading((if (estimate.early) "≈" else "") + shortDuration(it.coerceAtLeast(60_000)),
         if (estimate.stale) "Last estimate" else if (estimate.system) "Android estimate" else if (estimate.early) "Early estimate" else "Estimated",
-        if (estimate.stale) "Last valid prediction, retained for up to 2 minutes. New observations will refresh it." else "Based on observed rates, or Android's full-charge prediction. Charging taper is learned only when sufficient observations exist.")
+        if (estimate.stale) "Last valid prediction, retained for up to 2 minutes. New observations will refresh it."
+        else if (session.kind == BatterySession.DISCHARGING) "Based on up to an hour of observed use, with short spikes filtered and percentage-drop timing learned gradually. The estimate adapts to sustained changes in use. Missing monitoring intervals are excluded."
+        else "Based on observed rates, or Android's full-charge prediction. Charging taper is learned only when sufficient observations exist.")
     } ?: MetricReading(note = if (session.levelStatsSince != null && session.levelObservedMillis < BatteryRates.EARLY_MILLIS) "Collecting data" else "Estimate unavailable",
         reason = "Needs a reliable recent rate. Battery-level changes may be too small, or monitoring may have been interrupted. No fixed battery-life assumptions are used.")
 }

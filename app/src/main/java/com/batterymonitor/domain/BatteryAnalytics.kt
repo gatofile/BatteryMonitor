@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.math.abs
 import kotlin.math.roundToLong
+import kotlin.math.exp
 
 data class TimeEstimate(val millis: Long?, val reached: Boolean = false, val system: Boolean = false, val stale: Boolean = false, val early: Boolean = false)
 data class BatteryEstimates(
@@ -48,7 +49,9 @@ object BatteryAnalytics {
         val kind = session?.kind ?: return BatteryEstimates()
         val level = snapshot.percentage ?: return BatteryEstimates()
         val recent = samples.filter { it.sessionId == session.id && it.timestamp >= snapshot.timestampMillis - 60 * 60_000 }
-        val observedRate = BatteryRates.recent(recent, kind, snapshot.capacity?.milliAmpHours)
+        val observedRate = if (kind == BatterySession.DISCHARGING)
+            DischargeForecast.rate(recent, snapshot.timestampMillis, snapshot.capacity?.milliAmpHours)
+            else BatteryRates.recent(recent, kind, snapshot.capacity?.milliAmpHours)
         val rate = observedRate?.perHour
         val charging = kind == BatterySession.CHARGING
         val targets = if (charging) listOf(80, 90, 100) else listOf(20, 10, 0)
@@ -108,20 +111,33 @@ class EstimateSmoother {
     private val deadlines = mutableMapOf<Int, Double>()
     private val updatedAt = mutableMapOf<Int, Long>()
     private var sessionId: String? = null
+    private var sessionKind: String? = null
     fun smooth(estimates: BatteryEstimates, session: BatterySession?, now: Long): BatteryEstimates {
-        if (sessionId != session?.id) { deadlines.clear(); updatedAt.clear(); sessionId = session?.id }
+        if (sessionId != session?.id || sessionKind != session?.kind) {
+            deadlines.clear(); updatedAt.clear(); sessionId = session?.id; sessionKind = session?.kind
+        }
         return estimates.copy(targets = estimates.targets.mapValues { (target, estimate) ->
             if (estimate.millis == null || estimate.reached) {
                 val deadline = deadlines[target]
                 if (!estimate.reached && deadline != null && deadline > now && now - (updatedAt[target] ?: Long.MIN_VALUE) in 0..120_000)
-                    return@mapValues TimeEstimate((deadline - now).roundToLong(), stale = true)
+                    return@mapValues estimate.copy(millis = (deadline - now).roundToLong(), stale = true)
                 deadlines.remove(target)
                 updatedAt.remove(target)
                 estimate
             } else {
                 val newDeadline = now.toDouble() + estimate.millis
                 val previous = deadlines[target]
-                val filtered = previous?.let { it + .25 * (newDeadline - it) } ?: newDeadline
+                val elapsed = now - (updatedAt[target] ?: now)
+                val filtered = if (previous == null || previous <= now || elapsed !in 0..120_000) newDeadline
+                else if (session?.kind != BatterySession.DISCHARGING) previous + .25 * (newDeadline - previous)
+                else {
+                    // Same wall-clock response at 1s, 5s or 60s collection; duplicate emissions
+                    // cannot repeatedly pull the prediction toward the same noisy observation.
+                    val tau = 300_000.0
+                    val correction = (1 - exp(-elapsed / tau)) * (newDeadline - previous)
+                    val maximum = maxOf(60_000.0, (previous - now) * .05) * elapsed / 60_000
+                    previous + correction.coerceIn(-maximum, maximum)
+                }
                 deadlines[target] = filtered
                 updatedAt[target] = now
                 estimate.copy(millis = (filtered - now).coerceAtLeast(0.0).roundToLong())
